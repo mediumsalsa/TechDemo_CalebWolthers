@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,10 +11,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed = 1.5f;
     [SerializeField] private float jumpSpeed = 5.0f;
     [SerializeField] private float gravity = 10.0f;
+    [SerializeField] private Vector3 teleportPoint = new Vector3(0, 0.95f, 0);
+
 
     [Header("Look Settings")]
     [SerializeField] private float mouseSensitivity = 2.0f;
     [SerializeField] private float upDownLimit = 65f;
+
+
+    [Header("Spawn Settings")]
+    [SerializeField] private Vector3 spawnPoint = new Vector3(0, 0.95f, 0);
 
 
     float currentSpeed;
@@ -26,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController characterController;
 
+    private Rigidbody rb;
+
 
 
     void Start()
@@ -34,12 +43,16 @@ public class PlayerController : MonoBehaviour
 
         characterController = this.GetComponent<CharacterController>();
 
+        rb = this.GetComponent<Rigidbody>();
+
         playerCamera = GetComponentInChildren<Camera>();
     }
 
 
     void Update()
     {
+
+
         if (characterController.isGrounded && Input.GetKey(KeyCode.Space))
         {
             currentMovement.y = jumpSpeed;
@@ -64,7 +77,31 @@ public class PlayerController : MonoBehaviour
 
         HandleLook();
 
+       
+
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Killbox")
+        {
+
+
+            characterController.enabled = false;
+            gameObject.transform.position = spawnPoint;
+            characterController.enabled = true;
+
+
+        }
+
+        if (other.gameObject.tag == "CheckPoint")
+        {
+            spawnPoint = gameObject.transform.position;
+        }
+
+    }
+
 
     void HandleMovement()
     {
@@ -100,24 +137,15 @@ public class PlayerController : MonoBehaviour
         characterController.Move(currentMovement * Time.deltaTime);
 
 
-        if (Input.GetKey("e"))
+        if (Input.GetKeyDown("e"))
         {
 
-            // OnTeleport();
+            //Vector3 teleportPoint = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 
             characterController.enabled = false;
-            gameObject.transform.position = new Vector3(0, 0.95f, 0);
+            gameObject.transform.position = teleportPoint;
             characterController.enabled = true;
         }
-    }
-
-    void OnTeleport()
-    {
-        Vector3 from = gameObject.transform.position;
-        Vector3 to = new Vector3(0, 0, 0);
-
-        Vector3 deltaPos = to - from;
-        characterController.Move(deltaPos);
     }
 
 
