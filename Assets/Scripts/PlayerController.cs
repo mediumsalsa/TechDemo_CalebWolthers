@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 spawnPoint = new Vector3(0, 0.95f, 0);
 
 
+
+
+
     float currentSpeed;
 
     private float verticalRotation;
@@ -81,18 +84,22 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "SpawnCube")
+        {
+            CubeGenerator.SpawnCube();
+        }
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Killbox")
         {
-
-
             characterController.enabled = false;
             gameObject.transform.position = spawnPoint;
             characterController.enabled = true;
-
-
         }
 
         if (other.gameObject.tag == "CheckPoint")
@@ -100,6 +107,20 @@ public class PlayerController : MonoBehaviour
             spawnPoint = gameObject.transform.position;
         }
 
+        if (other.CompareTag("DoorButton"))
+        {
+            OpenDoor.IsPlayerInside = true;
+        }
+
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("DoorButton"))
+        {
+            OpenDoor.IsPlayerInside = false;
+        }
     }
 
 
