@@ -21,7 +21,7 @@ public class Collectible : MonoBehaviour
 
     void Update()
     {
-        transform.rotation = Quaternion.Euler(90f, Time.deltaTime * 100f, 0);   
+        transform.Rotate(0, 0.5f, 0.5f);
     }
 
 

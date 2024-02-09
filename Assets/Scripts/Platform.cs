@@ -47,9 +47,9 @@ public class Platform : MonoBehaviour
 
         transform.Translate(dir * moveSpeed * Time.deltaTime);
         
-        if (transform.childCount > 0)
+        if (transform.childCount > 1)
         {
-            Transform player = transform.GetChild(0);
+            Transform player = transform.GetChild(1);
             CharacterController controller = player.GetComponent<CharacterController>();
 
             if (controller != null) 

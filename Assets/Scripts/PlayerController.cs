@@ -112,6 +112,10 @@ public class PlayerController : MonoBehaviour
             OpenDoor.IsPlayerInside = true;
         }
 
+        if (other.CompareTag("BirdButton"))
+        {
+            currentMovement.y = 12;
+        }
 
     }
 
