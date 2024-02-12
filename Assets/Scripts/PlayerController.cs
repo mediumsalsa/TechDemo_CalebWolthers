@@ -23,7 +23,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 spawnPoint = new Vector3(0, 0.95f, 0);
 
 
+    private static float originalHeight = 1.8f;
+    private static float growHeight = 7.2f;
 
+
+    private static float currentHeight = originalHeight;
 
 
     float currentSpeed;
@@ -55,6 +59,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+        characterController.height = currentHeight;
+
 
         if (characterController.isGrounded && Input.GetKey(KeyCode.Space))
         {
@@ -62,19 +68,6 @@ public class PlayerController : MonoBehaviour
         }
         currentMovement.y -= gravity * Time.deltaTime;
         characterController.Move(currentMovement * Time.deltaTime);
-
-        if (Input.GetKey("c"))
-        {
-
-            characterController.height = 1f;
-        }
-        else if (Input.GetKeyUp("c"))
-        {
-            currentSpeed = walkSpeed;
-            characterController.height = 1.8f;
-        }
-
-
 
         HandleMovement();
 
@@ -97,6 +90,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Killbox")
         {
+            currentHeight = originalHeight;
+            jumpSpeed = 5;
             characterController.enabled = false;
             gameObject.transform.position = spawnPoint;
             characterController.enabled = true;
@@ -116,6 +111,21 @@ public class PlayerController : MonoBehaviour
         {
             currentMovement.y = 12;
         }
+
+        if (other.CompareTag("Shrink"))
+        {
+            currentHeight = originalHeight;
+
+            jumpSpeed = 5;
+        }
+
+        if (other.CompareTag("Grow"))
+        {
+            currentHeight = growHeight;
+
+            jumpSpeed = 10;
+        }
+
 
     }
 

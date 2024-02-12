@@ -12,6 +12,8 @@ TagManager:
   - Gold
   - Platform
   - BirdButton
+  - Grow
+  - Shrink
   layers:
   - Default
   - TransparentFX
