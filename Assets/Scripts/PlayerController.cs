@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         {
             currentHeight = growHeight;
 
-            jumpSpeed = 10;
+            jumpSpeed = 15;
         }
 
 
